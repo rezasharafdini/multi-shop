@@ -39,6 +39,10 @@ INSTALLED_APPS = [
 
     # Packege
     'django_cleanup.apps.CleanupConfig',
+    'widget_tweaks',
+
+    # App
+    'account_app.apps.AccountAppConfig',
 
 ]
 
@@ -127,3 +131,7 @@ MEDIA_ROOT = path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = "account_app.User"
+
+
+AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend",'account_app.authentication.EmailAthuntication']
