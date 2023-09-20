@@ -2,12 +2,10 @@
 {% load static %}
 {% load widget_tweaks %}
 
-{% block title %}Register{% endblock %}
-
+{% block title %}Contact Us{% endblock %}
 {% block icon %}
     <link rel="icon" href="{% static 'img/client-login-icon-4.gif' %}">
 {% endblock %}
-
 
 {% block Breadcrumb %}
     <!-- Breadcrumb Start -->
@@ -16,7 +14,7 @@
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
                     <a class="breadcrumb-item text-dark" href="#">Home</a>
-                    <span class="breadcrumb-item active">Register</span>
+                    <span class="breadcrumb-item active">Contact</span>
                 </nav>
             </div>
         </div>
@@ -24,28 +22,37 @@
     <!-- Breadcrumb End -->
 {% endblock %}
 
-
 {% block content %}
+
     <!-- Contact Start -->
     <div class="container-fluid">
         <h2 class="section-title position-relative text-uppercase text-center mx-xl-5 mb-4"><span
-                class="bg-secondary pr-3">User Register</span></h2>
+                class="bg-secondary pr-3">Contact Us</span></h2>
         <div class=" px-xl-5">
             <div class=" mb-5 contact-us" style="">
                 <div class="contact-form bg-light p-30">
                     <div id="success"></div>
                     <form method="post">
                         {% csrf_token %}
+
+                        {% if not request.user.email %}
+                            <div class="control-group">
+                                {{ form.email| append_attr:'class:form-control' }}
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        {% endif %}
+
                         <div class="control-group">
-                            {{ form.phone | append_attr:'class:form-control' }}
-                            {% if form.phone.errors %}
-                                <div class="btn btn-danger btn-block">{{ form.username.errors}}</div>
-                            {% endif %}
-
+                            {{ form.subject| append_attr:'class:form-control' }}
+                            <p class="help-block text-danger"></p>
                         </div>
-
+                        <div class="control-group">
+                            {{ form.message| append_attr:'class:form-control' }}
+                            <p class="help-block text-danger"></p>
+                        </div>
                         <div>
-                            <button class="btn btn-primary py-2 px-4" style="margin-top: 15px" type="submit" id="sendMessageButton">Send Code
+                            <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Send
+                                Message
                             </button>
                         </div>
                     </form>

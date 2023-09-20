@@ -69,3 +69,8 @@ class RegisterForm(forms.Form):
 class CheckOtp(forms.Form):
     randcode = forms.CharField(max_length=5, widget=forms.TextInput({'placeholder': 'code'}))
 
+
+class ContactUsForm(forms.Form):
+    subject = forms.CharField(max_length=200, widget=forms.TextInput({'placeholder': 'subject'}))
+    message = forms.CharField(widget=forms.Textarea({'placeholder': 'message'}))
+    email = forms.EmailField(required=False, widget=forms.EmailInput({'placeholder': 'email'}))

@@ -1,10 +1,15 @@
 import random
 import uuid
+from email.mime import message
 
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+from django.views.generic import FormView
+
 from . import forms, models
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class LoginView(View):
@@ -52,7 +57,6 @@ class RegisterView(View):
 
 
 class CheckOtp(View):
-
     def get(self, request):
 
         form = forms.CheckOtp()
@@ -76,3 +80,27 @@ class CheckOtp(View):
 
         else:
             return redirect('/')
+
+
+class ContactUsView(LoginRequiredMixin, FormView):
+    template_name = 'account_app/contact.html'
+    form_class = forms.ContactUsForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        cd = form.cleaned_data
+
+        if self.request.user.email:
+            email = self.request.user.email
+        else:
+            email = cd['email']
+
+        message = cd['message'] + '/' + email
+        send_mail(cd['subject'], message, 'rezasharafdinin@gmail.com',
+                  ['rezasharafdinin@gmail.com'], fail_silently=True)
+
+        return super().form_valid(form=form)
+
+    def form_invalid(self, form):
+        form.add_error('subject', 'email is wrong')
+        return self.render_to_response(self.get_context_data(form=form))
