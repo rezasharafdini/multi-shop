@@ -62,5 +62,10 @@ class LoginForm(forms.Form):
         return username
 
 
+class RegisterForm(forms.Form):
+    phone = forms.CharField(max_length=11, widget=forms.TextInput({'placeholder': 'phone'}))
 
+
+class CheckOtp(forms.Form):
+    randcode = forms.CharField(max_length=5, widget=forms.TextInput({'placeholder': 'code'}))
 

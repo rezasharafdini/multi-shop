@@ -36,7 +36,7 @@ class MyUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    phone = models.CharField(max_length=255,verbose_name='username',unique=True)
+    phone = models.CharField(max_length=255, verbose_name='username', unique=True)
     email = models.EmailField(
         verbose_name="email address",
         max_length=255,
@@ -46,7 +46,7 @@ class User(AbstractBaseUser):
     )
 
     full_name = models.CharField(max_length=50)
-    image = models.ImageField(upload_to='user/images',default='user/images/user.png')
+    image = models.ImageField(upload_to='user/images', default='user/images/user.png')
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -58,7 +58,6 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.phone
-
 
     def show_image(self):
         return format_html(f'<img src="{self.image.url}" width="50px" height="50px" >')
@@ -80,3 +79,13 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+
+class Otp(models.Model):
+    phone = models.CharField(max_length=11)
+    token = models.CharField(max_length=300)
+    randcode = models.CharField(max_length=5)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.phone
