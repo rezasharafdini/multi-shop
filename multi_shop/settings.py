@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     # App
     'account_app.apps.AccountAppConfig',
+    'product_app.apps.ProductAppConfig'
 
 ]
 

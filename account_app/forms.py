@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
-from account_app.models import User
+from account_app.models import User, AddressUser
 
 
 class UserCreationForm(forms.ModelForm):
@@ -74,3 +74,17 @@ class ContactUsForm(forms.Form):
     subject = forms.CharField(max_length=200, widget=forms.TextInput({'placeholder': 'subject'}))
     message = forms.CharField(widget=forms.Textarea({'placeholder': 'message'}))
     email = forms.EmailField(required=False, widget=forms.EmailInput({'placeholder': 'email'}))
+
+
+class AddAddressForm(forms.ModelForm):
+    user = forms.IntegerField(required=False)
+
+    class Meta:
+        model = AddressUser
+        fields = '__all__'
+        widgets = {
+            'address': forms.TextInput({'placeholder': '123 Street'}),
+            'city': forms.TextInput({'placeholder': 'New York'}),
+            'state': forms.TextInput({'placeholder': 'New York'}),
+            'country':forms.Select()
+        }

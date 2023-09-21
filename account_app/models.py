@@ -89,3 +89,17 @@ class Otp(models.Model):
 
     def __str__(self):
         return self.phone
+
+
+class AddressUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='address')
+    select_country = (('Iran', 'Iran'), ('Aragh', 'Aragh'))
+    address = models.CharField(max_length=100)
+    country = models.CharField(choices=select_country,max_length=30)
+    city = models.CharField(max_length=150)
+    state = models.CharField(max_length=70)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.phone + '-' + self.address[:30]
+

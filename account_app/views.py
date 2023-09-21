@@ -22,12 +22,16 @@ class LoginView(View):
 
     def post(self, request):
         form = forms.LoginForm(request.POST)
+
         if form.is_valid():
             cd = form.cleaned_data
             user = authenticate(username=cd['username'], password=cd['password'])
 
-            if user:
+            if user is not None:
                 login(request, user)
+                next_page = request.GET.get('next')
+                if next_page:
+                    return redirect(next_page)
                 return redirect('/')
             else:
                 form.add_error('username', 'username invalid.')
@@ -104,3 +108,19 @@ class ContactUsView(LoginRequiredMixin, FormView):
     def form_invalid(self, form):
         form.add_error('subject', 'email is wrong')
         return self.render_to_response(self.get_context_data(form=form))
+
+
+class AddAddressView(LoginRequiredMixin, View):
+    def get(self, request):
+        form = forms.AddAddressForm()
+        return render(request, 'account_app/checkout.html', {'form': form})
+
+    def post(self, request):
+        form = forms.AddAddressForm(request.POST)
+        if form.is_valid():
+            object = form.save(commit=False)
+            object.user = self.request.user
+            object.save()
+            return redirect('account_app:add_address')
+        form.add_error('address', 'form is wrong.')
+        return render(request, 'account_app/checkout.html', {'form': form})
