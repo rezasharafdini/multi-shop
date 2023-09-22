@@ -66,7 +66,6 @@ class Product(models.Model):
     size = models.ManyToManyField(Size, related_name='product')
     color = models.ManyToManyField(Color, related_name='product')
     vendor = models.ManyToManyField(VendorProduct, related_name='product')
-    like = models.ManyToManyField(User, null=True, blank=True, related_name='product')
 
     is_publish = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -93,3 +92,22 @@ class AddInformation(models.Model):
 
     def __str__(self):
         return self.description[:50]
+
+
+class LikeProduct(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='likes')
+
+    def __str__(self):
+        return self.user.phone + ':' + self.product.name
+
+
+class CommentProduct(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+    message = models.TextField()
+    is_publish = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.phone + ':' + self.product.name

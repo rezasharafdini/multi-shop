@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 
     # App
     'account_app.apps.AccountAppConfig',
-    'product_app.apps.ProductAppConfig'
+    'product_app.apps.ProductAppConfig',
+    'home_app.apps.HomeAppConfig',
 
 ]
 
@@ -71,6 +72,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'context_processors.context_processors.all_category',
+                'context_processors.context_processors.first_product'
             ],
         },
     },

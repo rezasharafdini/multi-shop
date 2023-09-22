@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+{% load tags %}
+{% load widget_tweaks %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block icon %}
+    <link rel="icon" href="{{ product.all_images.all.first.image.url }}">
+{% endblock %}
+
+
+{% block Breadcrumb %}
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="{% url 'home_app:home' %}">Home</a>
+                    <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                    <span class="breadcrumb-item active">Shop Detail</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+{% endblock %}
+
+
+{% block content %}
+
+
+    <!-- Shop Detail Start -->
+    <div class="container-fluid pb-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-5 mb-30">
+                <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner bg-light">
+
+                        {% for item in product.all_images.all %}
+                            <div class="carousel-item {% if item == product.all_images.all.first %}active{% endif %}">
+                                <img class="w-100 h-100" src="{{ item.image.url }}" alt="">
+                            </div>
+                        {% endfor %}
+
+
+                    </div>
+                    {% if product.all_images.all.count > 1 %}
+                        <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                            <i class="fa fa-2x fa-angle-left text-dark"></i>
+                        </a>
+                        <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                            <i class="fa fa-2x fa-angle-right text-dark"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-7 h-auto mb-30">
+                <div class="h-100 bg-light p-30">
+                    <h3>{{ product.name }}</h3>
+                    <h3 class="font-weight-semi-bold mb-4">${{ product.discounted_price }}</h3>
+                    <p class="mb-4">{{ product.information_short }}</p>
+                    <div class="d-flex mb-3">
+                        <strong class="text-dark mr-3">Sizes:</strong>
+                        <form>
+                            {% for size in product.size.all %}
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" id="{{ size.name }}" name="size"
+                                           value="{{ size.name }}">
+                                    <label class="custom-control-label" for="{{ size.name }}">{{ size.name }}</label>
+                                </div>
+                            {% endfor %}
+
+
+                    </div>
+                    <div class="d-flex mb-4">
+                        <strong class="text-dark mr-3">Colors:</strong>
+
+                        {% for color in product.color.all %}
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input" id="{{ color.name }}" name="color"
+                                       value="{{ color.name }}">
+                                <label class="custom-control-label" for="{{ color.name }}">{{ color.name }}</label>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                    <div class="d-flex align-items-center mb-4 pt-2">
+                        <div class="input-group quantity mr-3" style="width: 130px;">
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary btn-minus">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <input type="text" name='quantity' class="form-control bg-secondary border-0 text-center"
+                                   value="1">
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary btn-plus">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To
+                            Cart
+                        </button>
+                    </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row px-xl-5">
+            <div class="col">
+                <div class="bg-light p-30">
+                    <div class="nav nav-tabs mb-4">
+                        <a class="nav-item nav-link text-dark active" data-toggle="tab"
+                           href="#tab-pane-1">Description</a>
+                        <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-2">Information</a>
+                        <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-3">Reviews ({{ comment_product.all.count }})</a>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tab-pane-1">
+                            <h4 class="mb-3">Product Description</h4>
+                            <p>{{ product.description }}</p>
+                        </div>
+                        <div class="tab-pane fade" id="tab-pane-2">
+                            <h4 class="mb-3">Additional Information</h4>
+                            <p>{{ product.additional_information }}</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item px-0">
+                                            Sit erat duo lorem duo ea consetetur, et eirmod takimata.
+                                        </li>
+                                        <li class="list-group-item px-0">
+                                            Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
+                                        </li>
+                                        <li class="list-group-item px-0">
+                                            Duo amet accusam eirmod nonumy stet et et stet eirmod.
+                                        </li>
+                                        <li class="list-group-item px-0">
+                                            Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item px-0">
+                                            Sit erat duo lorem duo ea consetetur, et eirmod takimata.
+                                        </li>
+                                        <li class="list-group-item px-0">
+                                            Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
+                                        </li>
+                                        <li class="list-group-item px-0">
+                                            Duo amet accusam eirmod nonumy stet et et stet eirmod.
+                                        </li>
+                                        <li class="list-group-item px-0">
+                                            Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-pane-3">
+                            <div class="row" >
+                                <div class="col-md-6" id="comment-product">
+                                    <h4 class="mb-4">{{ comment_product.all.count }} review for {{ product.name }}</h4>
+                                    {% for comment in comment_product.all %}
+                                        <div class="media mb-4">
+                                            <img src="{{ comment.user.image.url }}" alt="Image"
+                                                 class="img-fluid mr-3 mt-1"
+                                                 style="width: 45px;">
+                                            <div class="media-body">
+                                                <h6>{{ comment.user.phone }}<small> -
+                                                    <i>{{ comment.created_at }}</i></small></h6>
+                                                <p>{{ comment.message }}</p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-md-6">
+                                    <h4 class="mb-4">Leave a review</h4>
+
+                                    <form id="form-comment" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="message">Your Review *</label>
+                                            {{ form.message | append_attr:'class:form-control' }}
+                                        </div>
+
+                                        <div class="form-group mb-0">
+                                            <input type="submit" value="Leave Your Review" class="btn btn-primary px-3"
+                                                   id="submit-comment">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Shop Detail End -->
+
+
+    <!-- Products Start -->
+    <div class="container-fluid py-5">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">You May Also Like</span>
+        </h2>
+        <div class="row px-xl-5">
+            <div class="col">
+                <div class="owl-carousel related-carousel">
+                    {% for pr in related_product.all %}
+                        <div class="product-item bg-light">
+                            <div class="product-img position-relative overflow-hidden">
+                                <img class="img-fluid w-100" src="{{ pr.all_images.all.first.image.url }}" alt="">
+                                <div class="product-action">
+                                    <a class="btn btn-outline-dark btn-square" href=""><i
+                                            class="fa fa-shopping-cart"></i></a>
+
+                                    {% is_like request.user.id pr.id as flag %}
+                                    {% if flag %}
+                                        <a class="btn btn-outline-dark btn-square"
+                                           onclick="LikeProduct('{{ pr.id }}','{{ pr.name }}')"><i class="fa fa-heart"
+                                                                                                   id="{{ pr.name }}"></i></a>
+                                    {% else %}
+                                        <a class="btn btn-outline-dark btn-square"
+                                           onclick="LikeProduct('{{ pr.id }}','{{ pr.name }}')"><i class="far fa-heart"
+                                                                                                   id="{{ pr.name }}"></i></a>
+                                    {% endif %}
+                                    <a class="btn btn-outline-dark btn-square" href=""><i
+                                            class="fa fa-sync-alt"></i></a>
+                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                                </div>
+                            </div>
+                            <div class="text-center py-4">
+                                <a class="h6 text-decoration-none text-truncate" href="">{{ pr.name }}</a>
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <h5>${{ pr.discounted_price }}</h5>
+                                    <h6 class="text-muted ml-2">
+                                        <del>${{ pr.price }}</del>
+                                    </h6>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Products End -->
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        function LikeProduct(id, name) {
+
+            var products = document.querySelectorAll('[id=' + name + ']')
+            $.get(`/products/like/${id}`).then(response => {
+                if (response['response'] === 'like') {
+                    for (var i = 0; i < products.length; i++) {
+                        products[i].setAttribute('class', 'fa fa-heart');
+                        document.getElementById('number-like').innerHTML = response['number_like']
+                    }
+                }
+
+                if (response['response'] === 'dislike') {
+                    for (var i = 0; i < products.length; i++) {
+                        products[i].setAttribute('class', 'far fa-heart');
+                        document.getElementById('number-like').innerHTML = response['number_like']
+                    }
+                }
+
+
+            })
+        }
+    </script>
+    <script>
+        var btn = document.getElementById('submit-comment');
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            axios.post('', document.getElementById('form-comment'))
+                .then(res => {
+                    if (res.data.flag === 'True') {
+                        document.getElementById('comment-product').innerHTML += `<div class="media mb-4">
+                                            <img src="${res.data.url_image}" alt="Image"
+                                                 class="img-fluid mr-3 mt-1"
+                                                 style="width: 45px;">
+                                            <div class="media-body">
+                                                <h6>${res.data.phone_user}<small> -
+                                                    <i>${res.data.created_at}</i></small></h6>
+                                                <p>${res.data.message}</p>
+                                            </div>
+                                        </div>`
+
+                    }
+                    if (res.data.flag === 'False') {
+                        alert('False')
+                    }
+                })
+                .cache(err => {
+                    window.alert(err)
+                })
+
+        })
+
+    </script>
+{% endblock %}
+
+
+
+

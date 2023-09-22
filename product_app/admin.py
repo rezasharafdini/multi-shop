@@ -33,11 +33,20 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('is_publish',)
     search_fields = ('name', 'slug')
     list_editable = ('discount', 'quantity', 'is_publish')
-    prepopulated_fields = {'slug':('name',)}
+    prepopulated_fields = {'slug': ('name',)}
     inlines = (ImageProductAdmin, InformationsProductAdmin)
+
+
+@admin.register(models.CommentProduct)
+class CommentProductAdmin(admin.ModelAdmin):
+    list_display = ['user', 'product', 'is_publish']
+    list_filter = ('is_publish',)
+    search_fields = ('user', 'product')
+    list_editable = ('is_publish',)
 
 
 admin.site.register(models.Size)
 admin.site.register(models.Color)
 admin.site.register(models.ImageProduct)
 admin.site.register(models.AddInformation)
+admin.site.register(models.LikeProduct)
