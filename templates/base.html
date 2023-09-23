@@ -80,13 +80,20 @@
             </a>
         </div>
         <div class="col-lg-4 col-6 text-left">
-            <form action="">
+            <form action="{% url 'product_app:list_product' %}">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
+                    {% if request.GET.q %}
+                         <input type="text" class="form-control" placeholder="Search for products" name="q" value="{{ request.GET.q }}">
+                        {% else %}
+                             <input type="text" class="form-control" placeholder="Search for products" name="q" >
+                    {% endif %}
+
                     <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
+                        <button type="submit" >
+                                <span class="input-group-text bg-transparent text-primary" style="border: none">
                                 <i class="fa fa-search"></i>
                             </span>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -131,8 +138,11 @@
                     <div class="navbar-nav mr-auto py-0">
                         <a href="{% url 'home_app:home' %}"
                            class="nav-item nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
-                        <a href="shop.html" class="nav-item nav-link">Shop</a>
-                        <a href="{% url 'product_app:detail_product' first_product.slug %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'detail_product' %}active{% endif %}">Shop Detail</a>
+                        <a href="{% url 'product_app:list_product' %}"
+                           class="nav-item nav-link {% if request.resolver_match.url_name == 'list_product' %}active{% endif %}">Shop</a>
+                        <a href="{% url 'product_app:detail_product' first_product.slug %}"
+                           class="nav-item nav-link {% if request.resolver_match.url_name == 'detail_product' %}active{% endif %}">Shop
+                            Detail</a>
                         <div class="nav-item dropdown">
                             <a href="#"
                                class="nav-link dropdown-toggle {% if request.resolver_match.url_name == 'add_address' %}active{% endif %}"
@@ -264,7 +274,9 @@
 
 <!-- Template Javascript -->
 <script src="{% static 'js/main.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js" integrity="sha512-aoTNnqZcT8B4AmeCFmiSnDlc4Nj/KPaZyB5G7JnOnUEkdNpCZs1LCankiYi01sLTyWy+m2P+W4XM+BuQ3Q4/Dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"
+        integrity="sha512-aoTNnqZcT8B4AmeCFmiSnDlc4Nj/KPaZyB5G7JnOnUEkdNpCZs1LCankiYi01sLTyWy+m2P+W4XM+BuQ3Q4/Dg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% block js %}{% endblock %}
 </body>
 

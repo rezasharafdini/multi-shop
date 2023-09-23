@@ -216,7 +216,7 @@
                             <div class="product-img position-relative overflow-hidden">
                                 <img class="img-fluid w-100" src="{{ pr.all_images.all.first.image.url }}" alt="">
                                 <div class="product-action">
-                                    <a class="btn btn-outline-dark btn-square" href=""><i
+                                    <a class="btn btn-outline-dark btn-square" href="{% url 'product_app:detail_product' pr.slug %}"><i
                                             class="fa fa-shopping-cart"></i></a>
 
                                     {% is_like request.user.id pr.id as flag %}

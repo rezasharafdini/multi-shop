@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from . import forms
 
 from . import models
+from . import filter_product
 
 
 class LikeProduct(LoginRequiredMixin, View):
@@ -38,7 +39,8 @@ class ProductDetailView(DetailView):
             slug=self.kwargs['slug'])
         context['related_product'] = related_product
         context['form'] = forms.CommentProductForm()
-        context['comment_product'] = models.Product.objects.get(slug=self.kwargs['slug']).comments.filter(is_publish=True).order_by('-created_at')[:5]
+        context['comment_product'] = models.Product.objects.get(slug=self.kwargs['slug']).comments.filter(
+            is_publish=True).order_by('-created_at')[:5]
         return context
 
     def post(self, request, **kwargs):
@@ -59,3 +61,26 @@ class ProductDetailView(DetailView):
 
                                  })
         return JsonResponse({'flag': 'False'})
+
+
+class ProductListView(ListView):
+    model = models.Product
+    queryset = models.Product.objects.filter(is_publish=True)
+    paginate_by = 1
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sizes'] = models.Size.objects.all()
+        context['colors'] = models.Color.objects.all()
+
+        return context
+
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        return filter_product.filter(self.request,queryset)
+
+
+
+

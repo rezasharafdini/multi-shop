@@ -158,7 +158,7 @@
                         <div class="product-img position-relative overflow-hidden">
                             <img class="img-fluid w-100" src="{{ product.all_images.all.first.image.url }}" alt="">
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href=""><i
+                                <a class="btn btn-outline-dark btn-square" href="{% url 'product_app:detail_product' product.slug %}"><i
                                         class="fa fa-shopping-cart"></i></a>
                                 {% is_like request.user.id product.id as flag %}
                                 {% if flag %}
@@ -232,7 +232,7 @@
                         <div class="product-img position-relative overflow-hidden">
                             <img class="img-fluid w-100" src="{{ product.all_images.all.first.image.url }}" alt="">
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href=""><i
+                                <a class="btn btn-outline-dark btn-square" href="{% url 'product_app:detail_product' product.slug %}"><i
                                         class="fa fa-shopping-cart"></i></a>
                                 {% is_like request.user.id product.id as flag %}
 

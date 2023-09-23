@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tags %}
+
+{% block title %}Shop{% endblock %}
+
+{% block icon %}
+    <link rel="icon" href="{% static 'img/user.jpg' %}">
+{% endblock %}
+
+{% block Breadcrumb %}
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="{% url 'home_app:home' %}">Home</a>
+                    <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                    <span class="breadcrumb-item active">Shop List</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+{% endblock %}
+
+
+{% block content %}
+    <!-- Shop Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <!-- Shop Sidebar Start -->
+            <div class="col-lg-3 col-md-4">
+                <!-- Price Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span>
+                </h5>
+                <div class="bg-light p-4 mb-30">
+                    <form>
+                        <div class=" d-flex align-items-center justify-content-between mb-3">
+                            <label for="min_price">Min</label>
+                            <input type="number" id="min_price" name="min_price"
+                                   {% if request.GET.min_price %}value="{{ request.GET.min_price }}"{% endif %}>
+
+                        </div>
+                        <div class=" d-flex align-items-center justify-content-between mb-3">
+                            <label for="max_price">Max</label>
+                            <input type="number" id="max_price" name="max_price"
+                                   {% if request.GET.max_price %}value="{{ request.GET.max_price }}"{% endif %}>
+
+                        </div>
+
+                        {% if request.GET.sort %}
+                            <input type="hidden" name="sort" value="{{ request.GET.sort }}">
+                        {% endif %}
+                        {% if request.GET.paginate_by %}
+                            <input type="hidden" name="paginate_by" value="{{ request.GET.paginate_by }}">
+                        {% endif %}
+                        {% if request.GET.category %}
+                            <input type="hidden" name="category" value="{{ request.GET.category }}">
+                        {% endif %}
+
+
+                </div>
+                <!-- Price End -->
+
+                <!-- Color Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by color</span>
+                </h5>
+                <div class="bg-light p-4 mb-30">
+
+                    {% for color in colors %}
+                        {% existence_variable request 'color' color.name as flag %}
+
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="{{ color.name }}" name="color"
+                                   value="{{ color.name }}" {% if flag %}checked{% endif %}>
+                            <label class="custom-control-label" for="{{ color.name }}">{{ color.name }}</label>
+                            <span class="badge border font-weight-normal">{{ color.product.all.count }}</span>
+                        </div>
+                    {% endfor %}
+
+                </div>
+                <!-- Color End -->
+
+                <!-- Size Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by size</span>
+                </h5>
+                <div class="bg-light p-4 mb-30">
+
+                    {% for size in sizes %}
+                        {% existence_variable request 'size' size.name as flag %}
+
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="{{ size.name }}"
+                                   {% if flag %}checked{% endif %} name="size" value="{{ size.name }}">
+                            <label class="custom-control-label" for="{{ size.name }}">{{ size.name }}</label>
+                            <span class="badge border font-weight-normal">{{ size.product.all.count }}</span>
+                        </div>
+                    {% endfor %}
+
+
+                </div>
+                <!-- Size End -->
+                <button type="submit" class="btn btn-primary btn-block">Filter</button>
+                <a href="{% url 'product_app:list_product' %}" class="btn btn-primary btn-block">Clear</a>
+
+            </div>
+            <!-- Shop Sidebar End -->
+
+
+            <!-- Shop Product Start -->
+            <div class="col-lg-9 col-md-8">
+                <div class="row pb-3">
+                    <div class="col-12 pb-1">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div>
+                                <button class="btn btn-sm btn-light"><i class="fa fa-th-large"></i></button>
+                                <button class="btn btn-sm btn-light ml-2"><i class="fa fa-bars"></i></button>
+                            </div>
+                            <div class="ml-2">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-light dropdown-toggle"
+                                            data-toggle="dropdown">Sorting
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <button type="submit" class="dropdown-item" name="sort" value="latest">Latest
+                                        </button>
+                                        <button type="submit" class="dropdown-item" name="sort" value="popularity">
+                                            Popularity
+                                        </button>
+
+                                    </div>
+                                </div>
+
+                                <div class="btn-group ml-2">
+                                    <button type="button" class="btn btn-sm btn-light dropdown-toggle"
+                                            data-toggle="dropdown">Showing
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <button class="dropdown-item" type="submit" name="paginate_by" value="10">10
+                                        </button>
+                                        <button class="dropdown-item" type="submit" name="paginate_by" value="20">20
+                                        </button>
+                                        <button class="dropdown-item" type="submit" name="paginate_by" value="30">30
+                                        </button>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% for product in product_list %}
+                        <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                            <div class="product-item bg-light mb-4">
+                                <div class="product-img position-relative overflow-hidden">
+                                    <img class="img-fluid w-100" src="{{ product.all_images.all.first.image.url }}"
+                                         alt="">
+                                    <div class="product-action">
+                                        <a class="btn btn-outline-dark btn-square" href="{% url 'product_app:detail_product' product.slug %}"><i
+                                                class="fa fa-shopping-cart"></i></a>
+                                        {% is_like request.user.id product.id as flag %}
+                                        {% if flag %}
+                                            <a class="btn btn-outline-dark btn-square"
+                                               onclick="LikeProduct('{{ product.id }}','{{ product.name }}')"><i
+                                                    id="{{ product.name }}" class="fa fa-heart"></i></a>
+                                        {% else %}
+                                            <a class="btn btn-outline-dark btn-square"
+                                               onclick="LikeProduct('{{ product.id }}','{{ product.name }}')"><i
+                                                    id="{{ product.name }}" class="far fa-heart"></i></a>
+                                        {% endif %}
+                                        <a class="btn btn-outline-dark btn-square" href=""><i
+                                                class="fa fa-sync-alt"></i></a>
+                                        <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                                    </div>
+                                </div>
+                                <div class="text-center py-4">
+                                    <a class="h6 text-decoration-none text-truncate" href="">{{ product.name }}</a>
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h5>${{ product.discounted_price }}</h5>
+                                        <h6 class="text-muted ml-2">
+                                            <del>${{ product.price }}</del>
+                                        </h6>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <div class="col-12">
+                        <nav>
+                            {% if page_obj.has_other_pages %}
+                                <ul class="pagination justify-content-center">
+                                    {% if page_obj.has_previous %}
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}">Previous</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for i in page_obj.paginator.page_range %}
+                                        {% if i == page_obj.number %}
+                                            <li class="page-item active"><a class="page-link"
+                                                                            href="{% my_url i 'page' request.GET.urlencode %}">{{ i }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="{% my_url i 'page' request.GET.urlencode %}">{{ i }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if page_obj.has_next %}
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}">Next</a>
+                                        </li>
+                                    {% endif %}
+
+                                </ul>
+                            {% endif %}
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Shop Product End -->
+        </div>
+    </div>
+    <!-- Shop End -->
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        function LikeProduct(id, name) {
+            var like = document.getElementById(name)
+            $.get(`/products/like/${id}`).then(response => {
+                if (response['response'] === 'like') {
+                    like.className = 'fa fa-heart';
+                    document.getElementById('number-like').innerHTML = response['number_like']
+                }
+                if (response['response'] === 'dislike') {
+                    like.className = 'far fa-heart';
+                    document.getElementById('number-like').innerHTML = response['number_like']
+                }
+            })
+        }
+    </script>
+
+{% endblock %}
