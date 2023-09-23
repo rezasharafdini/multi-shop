@@ -36,7 +36,7 @@
         <div class="col-lg-6 d-none d-lg-block">
             <div class="d-inline-flex align-items-center h-100">
                 <a class="text-body mr-3" href="">About</a>
-                <a class="text-body mr-3" href="">Contact</a>
+                <a class="text-body mr-3" href="{% url 'account_app:contact_us' %}">Contact</a>
                 <a class="text-body mr-3" href="">Help</a>
                 <a class="text-body mr-3" href="">FAQs</a>
             </div>
@@ -83,13 +83,14 @@
             <form action="{% url 'product_app:list_product' %}">
                 <div class="input-group">
                     {% if request.GET.q %}
-                         <input type="text" class="form-control" placeholder="Search for products" name="q" value="{{ request.GET.q }}">
-                        {% else %}
-                             <input type="text" class="form-control" placeholder="Search for products" name="q" >
+                        <input type="text" class="form-control" placeholder="Search for products" name="q"
+                               value="{{ request.GET.q }}">
+                    {% else %}
+                        <input type="text" class="form-control" placeholder="Search for products" name="q">
                     {% endif %}
 
                     <div class="input-group-append">
-                        <button type="submit" >
+                        <button type="submit">
                                 <span class="input-group-text bg-transparent text-primary" style="border: none">
                                 <i class="fa fa-search"></i>
                             </span>
@@ -145,11 +146,13 @@
                             Detail</a>
                         <div class="nav-item dropdown">
                             <a href="#"
-                               class="nav-link dropdown-toggle {% if request.resolver_match.url_name == 'add_address' %}active{% endif %}"
+                               class="nav-link dropdown-toggle {% if request.resolver_match.url_name == 'add_address' or request.resolver_match.url_name == 'cart' %}active{% endif %}"
                                data-toggle="dropdown">Pages <i
                                     class="fa fa-angle-down mt-1"></i></a>
                             <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                <a href="cart.html" class="dropdown-item">Shopping Cart</a>
+                                <a href="{% url 'cart_app:cart' %}"
+                                   class="dropdown-item {% if request.resolver_match.url_name == 'cart' %}active{% endif %}">Shopping
+                                    Cart</a>
                                 <a href="{% url 'account_app:add_address' %}"
                                    class="dropdown-item {% if request.resolver_match.url_name == 'add_address' %}active{% endif %}">Checkout</a>
                             </div>
