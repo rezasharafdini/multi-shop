@@ -39,3 +39,14 @@ def existence_variable(request, name, variable):
         return True
     else:
         return False
+
+
+@register.simple_tag
+def len_cart(request):
+    try:
+        return len(request.session['cart'])
+    except:
+        return 0
+
+
+

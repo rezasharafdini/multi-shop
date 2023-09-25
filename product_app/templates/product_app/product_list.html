@@ -157,17 +157,20 @@
                                     <img class="img-fluid w-100" src="{{ product.all_images.all.first.image.url }}"
                                          alt="">
                                     <div class="product-action">
-                                        <a class="btn btn-outline-dark btn-square" href="{% url 'product_app:detail_product' product.slug %}"><i
+                                        <a class="btn btn-outline-dark btn-square"
+                                           href="{% url 'product_app:detail_product' product.slug %}"><i
                                                 class="fa fa-shopping-cart"></i></a>
                                         {% is_like request.user.id product.id as flag %}
-                                        {% if flag %}
-                                            <a class="btn btn-outline-dark btn-square"
-                                               onclick="LikeProduct('{{ product.id }}','{{ product.name }}')"><i
-                                                    id="{{ product.name }}" class="fa fa-heart"></i></a>
-                                        {% else %}
-                                            <a class="btn btn-outline-dark btn-square"
-                                               onclick="LikeProduct('{{ product.id }}','{{ product.name }}')"><i
-                                                    id="{{ product.name }}" class="far fa-heart"></i></a>
+                                        {% if request.user.is_authenticated %}
+                                            {% if flag %}
+                                                <a class="btn btn-outline-dark btn-square"
+                                                   onclick="LikeProduct('{{ product.id }}','{{ product.name }}')"><i
+                                                        id="{{ product.name }}" class="fa fa-heart"></i></a>
+                                            {% else %}
+                                                <a class="btn btn-outline-dark btn-square"
+                                                   onclick="LikeProduct('{{ product.id }}','{{ product.name }}')"><i
+                                                        id="{{ product.name }}" class="far fa-heart"></i></a>
+                                            {% endif %}
                                         {% endif %}
                                         <a class="btn btn-outline-dark btn-square" href=""><i
                                                 class="fa fa-sync-alt"></i></a>

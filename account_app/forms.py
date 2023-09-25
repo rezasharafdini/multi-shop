@@ -57,7 +57,7 @@ class LoginForm(forms.Form):
         username = self.cleaned_data.get('username')
 
         if '@' not in username and len(username) != 11:
-            raise ValidationError('username or password is wrong.')
+            raise ValidationError('username is wrong.')
 
         return username
 
@@ -78,6 +78,7 @@ class ContactUsForm(forms.Form):
 
 class AddAddressForm(forms.ModelForm):
     user = forms.IntegerField(required=False)
+    email = forms.EmailField(required=False, widget=forms.EmailInput({'placeholder': 'reza@gmail.com'}))
 
     class Meta:
         model = AddressUser
@@ -86,5 +87,7 @@ class AddAddressForm(forms.ModelForm):
             'address': forms.TextInput({'placeholder': '123 Street'}),
             'city': forms.TextInput({'placeholder': 'New York'}),
             'state': forms.TextInput({'placeholder': 'New York'}),
-            'country':forms.Select()
+            'country': forms.Select(),
+            'phone': forms.TextInput({'placeholder': '+98377817068'}),
+
         }

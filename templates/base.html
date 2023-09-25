@@ -5,6 +5,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <title>{% block title %}{% endblock %}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -172,7 +173,7 @@
                         <a href="" class="btn px-0 ml-3">
                             <i class="fas fa-shopping-cart text-primary"></i>
                             <span class="badge text-secondary border border-secondary rounded-circle"
-                                  style="padding-bottom: 2px;">0</span>
+                                  style="padding-bottom: 2px;" id="len-cart">{% len_cart request %}</span>
                         </a>
                     </div>
                 </div>

@@ -41,6 +41,15 @@
                             </div>
 
                             <div class="col-md-6 form-group">
+                                <label>Phone</label>
+                                {{ form.phone | append_attr:'class:form-control' }}
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Email</label>
+                                {{ form.email | append_attr:'class:form-control' }}
+                            </div>
+
+                            <div class="col-md-6 form-group">
                                 <label>Country</label>
                                 {{ form.country | append_attr:'class:form-control' }}
                             </div>

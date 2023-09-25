@@ -32,6 +32,7 @@ class Cart:
                 'name_unique': name, 'size': size, 'color': color,
                 'ID': product.id, 'quantity': 0, 'price': product.discounted_price()
             }
+
         self.cart[name]['quantity'] += int(quantity)
         self.save()
 
@@ -50,6 +51,14 @@ class Cart:
         for item in self.cart.values():
             total += item['price'] * item['quantity']
         return total
+
+    def number_product(self):
+        return len(self.cart.values())
+
+    def remove_cart(self):
+        self.cart.clear()
+        self.save()
+
 
     def save(self):
         self.session.modified = True

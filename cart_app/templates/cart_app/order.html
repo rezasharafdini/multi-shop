@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Order{% endblock %}
+
+
+{% block icon %}
+    <link rel="icon" href="{% static 'img/user.jpg' %}">
+
+{% endblock %}
+
+
+
+{% block Breadcrumb %}
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="{% url 'home_app:home' %}">Home</a>
+                    <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                    <span class="breadcrumb-item active">Order</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+{% endblock %}
+
+
+{% block content %}
+
+
+    <!-- Cart Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-lg-8 table-responsive mb-5">
+                <table class="table table-light table-borderless table-hover text-center mb-0">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>image</th>
+                        <th>name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+
+                    </tr>
+                    </thead>
+                    <tbody class="align-middle">
+
+                    {% for item in order.items.all %}
+                        <tr>
+                            <td class="align-middle"><img src="{{ item.product.all_images.all.first.image.url }}" alt=""
+                                                          style="width: 50px;">
+
+                            </td>
+                            <td class="align-middle">${{ item.product.name }}</td>
+                            <td class="align-middle">${{ item.product.price }}</td>
+                            <td class="align-middle">{{ item.quantity }}</td>
+                            <td class="align-middle">${{ item.total }}</td>
+
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-4">
+                <form class="mb-30" id="form-coupon" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" class="form-control border-0 p-4" placeholder="Coupon Code" name="coupon">
+
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="submit-coupon"
+                            >Apply Coupon
+                            </button>
+                        </div>
+
+                    </div>
+                    <div id="div-message" style="display: none; margin-top: 15px">
+                        <div class="btn btn-danger btn-block" id="message-coupon">coupon dos not exit.</div>
+                    </div>
+                </form>
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Cart Summary</span>
+                </h5>
+                <div class="bg-light p-30 mb-5">
+
+                    <div class="pt-2">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5>Total</h5>
+                            <h5 id="total-order">${{ order.total_price }}</h5>
+                        </div>
+                        <button class="btn btn-block btn-success font-weight-bold my-3 py-3">Pay
+                        </button>
+                        <a href="{% url 'account_app:add_address' %}?next_page={% url 'cart_app:order_detail' order.id %}"
+                           class="btn btn-block btn-primary font-weight-bold ">Add Another Address</a>
+
+                        {% if request.user.address.all %}
+                            <select name="address_user"
+                                    class="form-select btn btn-block form-control"
+                                    aria-label="Default select example">
+                                {% for item in request.user.address.all %}
+                                    <option value="{{ item.address }}">{{ item.address }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cart End -->
+
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        var btn = document.getElementById('submit-coupon');
+        var id = '{{ order.id }}';
+
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var message = document.getElementById('message-coupon')
+            axios.post(`/cart/order/coupon/${id}`, document.getElementById('form-coupon'))
+                .then(res => {
+                    if (res.data.flag === 'True') {
+                        document.getElementById('total-order').innerHTML = res.data.total;
+                        document.getElementById('div-message').style.display = 'block'
+                        message.innerHTML = 'success';
+                        message.className = 'btn btn-success btn-block'
+                    } else {
+                        document.getElementById('div-message').style.display = 'block'
+
+                    }
+                })
+                .cache(err => {
+                    window.alert(err)
+                })
+
+        })
+    </script>
+
+
+{% endblock %}
+
+
+
+

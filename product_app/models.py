@@ -90,6 +90,7 @@ class AddInformation(models.Model):
     description = models.CharField(max_length=150)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='informations')
 
+
     def __str__(self):
         return self.description[:50]
 

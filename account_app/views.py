@@ -1,7 +1,8 @@
 import random
 import uuid
-from email.mime import message
+from email import message
 
+from django.contrib import messages
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -34,7 +35,7 @@ class LoginView(View):
                     return redirect(next_page)
                 return redirect('/')
             else:
-                form.add_error('username', 'username invalid.')
+                messages.error(request,'username invalid')
         return render(request, 'account_app/login.html', {'form': form})
 
 
@@ -117,10 +118,14 @@ class AddAddressView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = forms.AddAddressForm(request.POST)
+        next_page = request.GET.get('next_page')
         if form.is_valid():
             object = form.save(commit=False)
             object.user = self.request.user
             object.save()
+            if next_page:
+                return redirect(next_page)
+
             return redirect('account_app:add_address')
         form.add_error('address', 'form is wrong.')
         return render(request, 'account_app/checkout.html', {'form': form})
