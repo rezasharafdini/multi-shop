@@ -9,5 +9,6 @@ urlpatterns = [
     path('register/', views.RegisterView.as_view(), name='Register'),
     path('check/otp', views.CheckOtp.as_view(), name='check_otp'),
     path('contact/', views.ContactUsView.as_view(), name='contact_us'),
-    path('add/address/',views.AddAddressView.as_view(), name='add_address')
+    path('add/address/', views.AddAddressView.as_view(), name='add_address'),
+    path('add/email/', views.EmailForLettersView.as_view(), name='add_email')
 ]

@@ -1,9 +1,10 @@
 import random
 import uuid
-from email import message
+import ghasedakpack
 
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import FormView
@@ -35,7 +36,7 @@ class LoginView(View):
                     return redirect(next_page)
                 return redirect('/')
             else:
-                messages.error(request,'username invalid')
+                messages.error(request, 'username invalid')
         return render(request, 'account_app/login.html', {'form': form})
 
 
@@ -53,6 +54,9 @@ class RegisterView(View):
         if form.is_valid():
             token = str(uuid.uuid4())
             randcode = random.randint(10000, 99999)
+            # sms = ghasedakpack.Ghasedak("Your ApiKey")
+            # sms.verification({'receptor': form.cleaned_data['phone'], 'type': '1', 'template': 'randcode', 'param1': randcode})
+
             print(randcode)
             models.Otp.objects.create(phone=form.cleaned_data.get('phone'), token=token, randcode=randcode)
             self.request.session['token'] = token
@@ -122,6 +126,10 @@ class AddAddressView(LoginRequiredMixin, View):
         if form.is_valid():
             object = form.save(commit=False)
             object.user = self.request.user
+            if models.AddressUser.objects.filter(user=self.request.user).count() > 3:
+                messages.error(request,'Your Address more than 4')
+                return render(request, 'account_app/checkout.html', {'form': form})
+
             object.save()
             if next_page:
                 return redirect(next_page)
@@ -129,3 +137,10 @@ class AddAddressView(LoginRequiredMixin, View):
             return redirect('account_app:add_address')
         form.add_error('address', 'form is wrong.')
         return render(request, 'account_app/checkout.html', {'form': form})
+
+
+class EmailForLettersView(View):
+    def post(self, request):
+        email = request.POST.get('email')
+        models.EmailForNewLetter.objects.get_or_create(email=email)
+        return JsonResponse({'response': 'ok'})

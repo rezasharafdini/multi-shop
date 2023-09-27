@@ -8,6 +8,7 @@ from product_app.models import Product
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     total_price = models.PositiveSmallIntegerField()
+    address = models.TextField(null=True, blank=True)
 
     is_paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -24,6 +25,7 @@ class OrderItem(models.Model):
     color = models.CharField(max_length=30)
     quantity = models.PositiveSmallIntegerField()
     total = models.PositiveSmallIntegerField()
+
 
     def __str__(self):
         return f'{self.product.name}-{self.size}-{self.color}-{self.quantity}'

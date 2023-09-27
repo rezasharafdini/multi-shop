@@ -216,14 +216,14 @@
                                     {% if request.user.is_authenticated %}
                                         {% if flag %}
                                             <a class="btn btn-outline-dark btn-square"
-                                               onclick="LikeProduct('{{ pr.id }}','{{ pr.name }}')"><i
+                                               onclick="LikeProduct('{{ pr.id }}','{{ pr.slug }}')"><i
                                                     class="fa fa-heart"
-                                                    id="{{ pr.name }}"></i></a>
+                                                    id="{{ pr.slug }}"></i></a>
                                         {% else %}
                                             <a class="btn btn-outline-dark btn-square"
-                                               onclick="LikeProduct('{{ pr.id }}','{{ pr.name }}')"><i
+                                               onclick="LikeProduct('{{ pr.id }}','{{ pr.slug }}')"><i
                                                     class="far fa-heart"
-                                                    id="{{ pr.name }}"></i></a>
+                                                    id="{{ pr.slug }}"></i></a>
                                         {% endif %}
                                     {% endif %}
                                     <a class="btn btn-outline-dark btn-square" href=""><i

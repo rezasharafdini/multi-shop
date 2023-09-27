@@ -164,12 +164,12 @@
                                         {% if request.user.is_authenticated %}
                                             {% if flag %}
                                                 <a class="btn btn-outline-dark btn-square"
-                                                   onclick="LikeProduct('{{ product.id }}','{{ product.name }}')"><i
-                                                        id="{{ product.name }}" class="fa fa-heart"></i></a>
+                                                   onclick="LikeProduct('{{ product.id }}','{{ product.slug }}')"><i
+                                                        id="{{ product.slug }}" class="fa fa-heart"></i></a>
                                             {% else %}
                                                 <a class="btn btn-outline-dark btn-square"
-                                                   onclick="LikeProduct('{{ product.id }}','{{ product.name }}')"><i
-                                                        id="{{ product.name }}" class="far fa-heart"></i></a>
+                                                   onclick="LikeProduct('{{ product.id }}','{{ product.slug }}')"><i
+                                                        id="{{ product.slug }}" class="far fa-heart"></i></a>
                                             {% endif %}
                                         {% endif %}
                                         <a class="btn btn-outline-dark btn-square" href=""><i

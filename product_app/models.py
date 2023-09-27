@@ -90,7 +90,6 @@ class AddInformation(models.Model):
     description = models.CharField(max_length=150)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='informations')
 
-
     def __str__(self):
         return self.description[:50]
 
@@ -112,3 +111,12 @@ class CommentProduct(models.Model):
 
     def __str__(self):
         return self.user.phone + ':' + self.product.name
+
+
+class OfferProduct(models.Model):
+    name = models.CharField(max_length=20)
+    product = models.ManyToManyField(Product, related_name='offer')
+    percent = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return self.name

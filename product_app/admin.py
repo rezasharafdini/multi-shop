@@ -45,6 +45,11 @@ class CommentProductAdmin(admin.ModelAdmin):
     list_editable = ('is_publish',)
 
 
+@admin.register(models.OfferProduct)
+class OfferProductAdmin(admin.ModelAdmin):
+    list_display = ['name', 'percent']
+
+
 admin.site.register(models.Size)
 admin.site.register(models.Color)
 admin.site.register(models.ImageProduct)

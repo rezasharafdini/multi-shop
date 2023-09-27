@@ -9,4 +9,6 @@ urlpatterns = [
     path('order/detail/<int:id>', views.OrderDetailView.as_view(), name='order_detail'),
     path('order/creation', views.OrderCreationView.as_view(), name='order_creation'),
     path('order/coupon/<int:id>', views.CouponView.as_view(), name='order_coupon'),
+    path('order/request/<int:order_id>', views.send_request, name='send_request'),
+    path('verify/', views.verify, name='verify')
 ]

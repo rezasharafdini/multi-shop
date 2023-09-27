@@ -11,6 +11,7 @@ class HomeView(TemplateView):
         context['recent_products'] = models.Product.objects.order_by('-created_at').filter(is_publish=True)[:8]
         context['vendors'] = models.VendorProduct.objects.filter(is_publish=True)
         context['products'] = models.Product.objects.filter(is_publish=True)[:8]
+        context['offer_product'] = models.OfferProduct.objects.all()
 
         return context
 

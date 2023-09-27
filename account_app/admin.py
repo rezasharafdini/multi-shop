@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from . import forms
 
-from .models import User,Otp,AddressUser
+from .models import User,Otp,AddressUser, EmailForNewLetter, PrimaryUserProfile
 
 
 class UserAdmin(BaseUserAdmin):
@@ -37,10 +37,13 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = []
 
 
+
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
 admin.site.register(Otp)
 admin.site.register(AddressUser)
+admin.site.register(EmailForNewLetter)
+admin.site.register(PrimaryUserProfile)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
 admin.site.unregister(Group)

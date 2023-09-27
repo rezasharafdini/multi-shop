@@ -106,3 +106,24 @@ class AddressUser(models.Model):
 
     def __str__(self):
         return self.user.phone + '-' + self.address[:150]
+
+
+class EmailForNewLetter(models.Model):
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email
+
+
+class PrimaryUserProfile(models.Model):
+    phone = models.CharField(max_length=11)
+    address = models.TextField()
+    email = models.EmailField(unique=True)
+    url_instagram = models.CharField(max_length=50)
+    url_linkedin = models.CharField(max_length=50)
+    url_facebook = models.CharField(max_length=50)
+    url_twitter = models.CharField(max_length=50)
+
+
+    def __str__(self):
+        return self.phone

@@ -81,7 +81,7 @@
 
                     </div>
                     <div id="div-message" style="display: none; margin-top: 15px">
-                        <div class="btn btn-danger btn-block" id="message-coupon">coupon dos not exit.</div>
+                        <div class="btn btn-danger btn-block" id="message-coupon">coupon invalid.</div>
                     </div>
                 </form>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Cart Summary</span>
@@ -93,20 +93,27 @@
                             <h5>Total</h5>
                             <h5 id="total-order">${{ order.total_price }}</h5>
                         </div>
-                        <button class="btn btn-block btn-success font-weight-bold my-3 py-3">Pay
-                        </button>
-                        <a href="{% url 'account_app:add_address' %}?next_page={% url 'cart_app:order_detail' order.id %}"
-                           class="btn btn-block btn-primary font-weight-bold ">Add Another Address</a>
+                        <form method="post" action="{% url 'cart_app:send_request' order.id %}">
+                            {% csrf_token %}
 
-                        {% if request.user.address.all %}
-                            <select name="address_user"
-                                    class="form-select btn btn-block form-control"
-                                    aria-label="Default select example">
-                                {% for item in request.user.address.all %}
-                                    <option value="{{ item.address }}">{{ item.address }}</option>
-                                {% endfor %}
-                            </select>
-                        {% endif %}
+
+                            {% if request.user.address.all %}
+                                <button type="submit" class="btn btn-block btn-success font-weight-bold my-3 py-3">Pay
+                                </button>
+                            {% endif %}
+                            <a href="{% url 'account_app:add_address' %}?next_page={% url 'cart_app:order_detail' order.id %}"
+                               class="btn btn-block btn-primary font-weight-bold ">Add Another Address</a>
+
+                            {% if request.user.address.all %}
+                                <select name="address_user"
+                                        class="form-select btn btn-block form-control"
+                                        aria-label="Default select example">
+                                    {% for item in request.user.address.all %}
+                                        <option value="{{ item.address }}">{{ item.address }}</option>
+                                    {% endfor %}
+                                </select>
+                            {% endif %}
+                        </form>
                     </div>
                 </div>
             </div>
