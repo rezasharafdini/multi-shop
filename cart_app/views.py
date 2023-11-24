@@ -76,7 +76,7 @@ class CouponView(View):
             name = request.POST.get('coupon')
             order = Order.objects.get(id=id)
             now = timezone.now()
-            print(now)
+      
             coupon = CouponCode.objects.get(name=name, active=True, valid_to__gte=now, valid_from__lte=now)
             if coupon.quantity == 0:
                 return JsonResponse({'flag': 'False'})
